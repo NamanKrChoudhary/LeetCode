@@ -8,7 +8,8 @@ public:
             else 
             {
                 double a = (nums2[nums2.size()/2]+ nums2[(nums2.size()/2)-1]);
-                return a;
+                cout << a << endl;
+                return a/2;
             }
         }
         else if(nums2.size() == 0)
@@ -17,7 +18,7 @@ public:
             else 
             {
                 double a = (nums1[nums1.size()/2]+ nums1[(nums1.size()/2)-1]);
-                return a;
+                return a/2;
             }
         }
         long long int s = min(nums1[0], nums2[0]), e = max(nums1[nums1.size()-1], nums2[nums2.size()-1]), mid = s + ((e-s)/2);
