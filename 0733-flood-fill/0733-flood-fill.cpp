@@ -6,7 +6,7 @@ public:
         if(curri>0 && !vis[curri-1][currj] && image[curri-1][currj] == image[curri][currj]) dfs(vis, image, curri-1, currj, clr);
         if(currj>0 && !vis[curri][currj-1] && image[curri][currj-1] == image[curri][currj]) dfs(vis, image, curri, currj-1, clr);
         if(curri<image.size()-1 && !vis[curri+1][currj] && image[curri+1][currj] == image[curri][currj]) dfs(vis, image, curri+1, currj, clr);
-        if(currj<image.size()-1 && !vis[curri][currj+1] && image[curri][currj+1] == image[curri][currj]) dfs(vis, image, curri, currj+1, clr);
+        if(currj<image[0].size()-1 && !vis[curri][currj+1] && image[curri][currj+1] == image[curri][currj]) dfs(vis, image, curri, currj+1, clr);
         image[curri][currj] = clr;
         return;
     }
