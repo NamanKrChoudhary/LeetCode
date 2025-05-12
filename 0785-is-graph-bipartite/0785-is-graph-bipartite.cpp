@@ -3,7 +3,6 @@ public:
     bool isBipartite(vector<vector<int>>& graph) {
         vector<bool> vis(graph.size());
         vector<long long int> val(graph.size());
-        bool check = true;
         for(int i=0; i<graph.size(); i++)
         {
             if(!vis[i])
@@ -29,7 +28,6 @@ public:
                 }
             }
         }
-        for(int i=0; i<graph.size(); i++) cout << val[i] << " "; cout << endl;
         return true;
     }
 };
