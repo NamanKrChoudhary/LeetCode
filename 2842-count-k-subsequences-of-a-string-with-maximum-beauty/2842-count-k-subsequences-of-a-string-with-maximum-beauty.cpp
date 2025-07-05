@@ -36,13 +36,14 @@ public:
             if(arr[i] == prev) cnt = cnt + 1;
             else
             {
+                if(tot+cnt >= k) break;
                 ways = ((ways*modpow(prev, cnt)))%mod;
                 prev = arr[i];
-                if(tot+cnt >= k) break;
                 tot = tot + cnt;
                 cnt = 1;
             }
         }
+        cout << tot << " " << cnt << " " << ways << endl;
         long long int req = k-tot;
         ways = (((((((fact[cnt]*invfact[req])%mod)*invfact[cnt-req])%mod)*modpow(prev, req))%mod)*ways)%mod;
         return ways;
