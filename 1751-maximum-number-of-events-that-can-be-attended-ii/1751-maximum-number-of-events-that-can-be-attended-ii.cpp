@@ -19,7 +19,7 @@ public:
                 long long int curr1 = 0;
                 long long int curr2 = 0;
                 if(j == 1) curr2 = events[prs[i].second][2];
-                long long int it1 = upper_bound(st.begin(), st.end(), st[i]) - st.begin();
+                long long int it1 = i+1;
                 long long int it2 = upper_bound(st.begin(), st.end(), events[prs[i].second][1]) - st.begin();
                 if(it1 < st.size()) curr1 = curr1 + arr[it1][j];
                 if(it2 < st.size()) curr2 = events[prs[i].second][2] + arr[it2][j-1];
@@ -27,6 +27,8 @@ public:
             }
         }
         long long int maxx = 0;
+        // cout << arr[1][2] << " " << arr[1][1] << endl;
+        // for(auto i: prs) cout << i.first << " " << events[i.second][1] << " " << events[i.second][2] << endl;
         for(int i=0; i<arr.size(); i++) for(int j=0; j<arr[i].size(); j++) maxx = max(maxx, arr[i][j]);
         return maxx;
     }
