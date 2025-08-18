@@ -6,34 +6,7 @@ public:
     long double evaluate(string& expression)
     {
         queue<char> out;
-        stack<char> ops;
-        for(int i=0; i<expression.size(); i++)
-        {
-            if(nums.find(expression[i]) != nums.end()) out.push(expression[i]);
-            else if(expression[i] == '(') ops.push('(');
-            else if(expression[i] == ')')
-            {
-                while(ops.top() != '(')
-                {
-                    char curr = ops.top();
-                    ops.pop();
-                    out.push(curr);
-                }
-                ops.pop();
-            }
-            else
-            {
-                while(!ops.empty())
-                {
-                    char curr = ops.top();
-                    if(signpr[expression[i]] > signpr[curr]) break;
-                    out.push(curr);
-                    ops.pop();
-                }
-                ops.push(expression[i]);
-            }
-        }
-        while(!ops.empty()) {out.push(ops.top()); ops.pop();}
+        for(int i=0; i<expression.size(); i++) out.push(expression[i]);
 
         // evaluation
         stack<long double> eval;
@@ -56,31 +29,32 @@ public:
                 }
             }
         }
+        //if(expression[0] == '8')cout << expression << " " << eval.top() << endl;
         return eval.top();
+        //8 4 - 7 1 - *  
     }
-    // infix convertor for all possible arrangements with brackets.
-    bool convert(vector<int>& nos, vector<bool>& vis, vector<char>& operations, bool open, bool num, bool ops, bool close, string& expression, long long int curropen)
+    
+    bool convert(string& expression, vector<int>& nos, vector<bool>& vis, vector<char> operations, long long int reqno, long long int reqops)
     {
-        if(close && vis[0] && vis[1] && vis[2] && vis[3])
+        if(reqno == 0 && reqops == 0)
         {
-            for(int i=0; i<curropen; i++) expression.push_back(')');
-            long long int eval = evaluate(expression);
-            for(int i=0; i<curropen; i++) expression.pop_back();
-            if(abs(24-eval) < 1e-9) return true;
+            long double check = evaluate(expression);
+            if(fabs(check-24) < 1e-9) return true;
             else return false;
         }
-
-        else if(open)
+        long long int currno = 4-reqno, currops = 3-reqops;
+        if(currno == 4) 
         {
-            bool check1 = convert(nos, vis, operations, false, true, false, false, expression, curropen);
-            expression.push_back('(');
-            bool check2 = convert(nos, vis, operations, false, true, false, false, expression, curropen+1);
-            expression.pop_back();
-            if(check1 || check2) return true;
-            else return false;
+            for(int i=0; i<4; i++) 
+            {
+                expression.push_back(operations[i]);
+                bool check = convert(expression, nos, vis, operations, reqno, reqops-1);
+                expression.pop_back();
+                if(check) return true;
+            }
+            return false;
         }
-
-        else if(num)
+        else if(currno-currops > 1)
         {
             for(int i=0; i<4; i++)
             {
@@ -88,35 +62,34 @@ public:
                 {
                     expression.push_back('0'+nos[i]);
                     vis[i] = true;
-                    bool check1 = convert(nos, vis, operations, false, false, false, true, expression, curropen);
+                    bool check = convert(expression, nos, vis, operations, reqno-1, reqops);
                     expression.pop_back();
                     vis[i] = false;
-                    if(check1) return true;
+                    if(check) return true;
                 }
             }
-            return false;
-        }
-
-        else if(close)
-        {
-            for(int i=0; i<=curropen; i++)
+            for(int i=0; i<4; i++)
             {
-                for(int j=1; j<=i; j++) expression.push_back(')');
-                bool check1 = convert(nos, vis, operations, false, false, true, false, expression, curropen-i);
-                for(int j=1; j<=i; j++) expression.pop_back();
-                if(check1) return true;
+                expression.push_back(operations[i]);
+                bool check = convert(expression, nos, vis, operations, reqno, reqops-1);
+                expression.pop_back();
+                if(check) return true;
             }
             return false;
         }
-
         else
         {
             for(int i=0; i<4; i++)
             {
-                expression.push_back(operations[i]);
-                bool check1 = convert(nos, vis, operations, true, false, false, false, expression, curropen);
-                expression.pop_back();
-                if(check1) return true;
+                if(!vis[i])
+                {
+                    expression.push_back('0'+nos[i]);
+                    vis[i] = true;
+                    bool check = convert(expression, nos, vis, operations, reqno-1, reqops);
+                    expression.pop_back();
+                    vis[i] = false;
+                    if(check) return true;
+                }
             }
             return false;
         }
@@ -128,6 +101,36 @@ public:
         vector<bool> vis(4, false);
         vector<char> operations = {'+', '-', '*', '/'};
         string expression = "";
-        return convert(cards, vis, operations, true, false, false, false, expression, 0);
+        for(int i=0; i<4; i++)
+        {
+            expression.push_back('0'+cards[i]);
+            vis[i] = true;
+            for(int j=0; j<4; j++)
+            {
+                if(i == j) continue;
+                expression.push_back('0'+cards[j]);
+                vis[j] = true;
+                bool check = convert(expression, cards, vis, operations, 2, 3);
+                vis[j] = false;
+                expression.pop_back();
+                if(check) return true;
+            }
+            vis[i] = false;
+            expression.pop_back();
+        }
+        return false;
+        // vector<string> pos = {         "a+b+c+d"
+        // (a + b) + c + d
+        // a + (b + c) + d
+        // a + b + (c + d)
+        // (a + b) + (c + d)
+        // (a + b + c) + d
+        // ((a + b) + c) + d
+        // (a + (b + c)) + d
+        // a + (b + c + d)
+        // a + (b + (c + d))
+        // a + ((b + c) + d)
+        // a + (b + c) + d
+
     }
 };
