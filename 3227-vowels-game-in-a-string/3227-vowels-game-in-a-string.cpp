@@ -5,8 +5,8 @@ public:
         bool check = false;
         for(int i=0; i<s.size(); i++)
         {
-            if(ss.find(s[i]) != ss.end()){check = true; break;}
+            if(ss.find(s[i]) != ss.end()){return true;}
         }
-        return check;
+        return false;
     }
 };
