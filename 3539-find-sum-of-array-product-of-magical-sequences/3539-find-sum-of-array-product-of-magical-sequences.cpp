@@ -18,10 +18,10 @@ public:
         if(dp.find({curri, remel, remk, carry}) != dp.end()) return dp[{curri, remel, remk, carry}];
         if(remel == 0)
         {
-            if(__builtin_popcount(carry) == remk) return 1;
+            if(__builtin_popcountll(carry) == remk) return 1;
             else return 0;
         }
-        if((remk == 0 && remel != 0) || (remk > remel) || (curri >= nums.size() && remel > 0)) return 0;
+        if(remk < 0 || (curri >= nums.size() && remel > 0)) return 0;
         long long int sum = 0;
         for(int i=0; i<=remel; i++)
         {
