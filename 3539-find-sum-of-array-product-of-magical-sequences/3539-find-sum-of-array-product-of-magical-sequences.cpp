@@ -21,7 +21,7 @@ public:
             if(__builtin_popcountll(carry) == remk) return 1;
             else return 0;
         }
-        if(remk < 0 || (curri >= nums.size() && remel > 0)) return 0;
+        if((remk == 0 && remel > 0) || (curri >= nums.size() && remel > 0)) return 0;
         long long int sum = 0;
         for(int i=0; i<=remel; i++)
         {
