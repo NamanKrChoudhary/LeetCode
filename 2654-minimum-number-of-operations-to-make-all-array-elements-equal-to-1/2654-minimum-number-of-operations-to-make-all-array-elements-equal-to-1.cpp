@@ -1,33 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
 class Solution {
 public:
     int minOperations(vector<int>& nums) {
-        int n = nums.size();
-        int num1 = 0;
-        int g = 0;
-        for (int x : nums) {
-            if (x == 1) {
-                num1++;
-            }
-            g = gcd(g, x);
-        }
-        if (num1 > 0) {
-            return n - num1;
-        }
-        if (g > 1) {
-            return -1;
-        }
-
-        int min_len = n;
-        for (int i = 0; i < n; i++) {
-            int g = 0;
-            for (int j = i; j < n; j++) {
-                g = gcd(g, nums[j]);
-                if (g == 1) {
-                    min_len = min(min_len, j - i + 1);
+        long long int n = nums.size();
+        long long int cnt1 = 0;
+        for(int i=0; i<n; i++) if(nums[i] == 1) cnt1 = cnt1 + 1;
+        if(cnt1 > 0) return n-cnt1;
+        long long int minn = n+1;
+        for(int i=0; i<n; i++)
+        {
+            int gc = nums[i];
+            for(int j=i; j<n; j++)
+            {
+                gc = __gcd(gc, nums[j]);
+                if(gc == 1)
+                {
+                    long long int sz = j-i+1;
+                    minn = min(minn, sz);
                     break;
                 }
             }
         }
-        return min_len + n - 2;
+        if(minn == n+1) return -1;
+        return n-1+(minn-1);
     }
 };
