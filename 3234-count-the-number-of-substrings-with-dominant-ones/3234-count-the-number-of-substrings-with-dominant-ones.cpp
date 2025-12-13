@@ -1,29 +1,36 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        int n = s.size();
-        vector<int> pre(n + 1);
-        pre[0] = -1;
-        for (int i = 0; i < n; i++) {
-            if (i == 0 || (i > 0 && s[i - 1] == '0')) {
-                pre[i + 1] = i;
-            } else {
-                pre[i + 1] = pre[i];
-            }
+        long long int n = s.size();
+        vector<long long int> prev(n, 0);
+        long long int curr = 0;
+        for(int i=0; i<n; i++)
+        {
+            if(s[i] == '0') curr = curr + 1;
+            prev[i] = curr;
         }
-        int res = 0;
-        for (int i = 1; i <= n; i++) {
-            int cnt0 = s[i - 1] == '0';
-            int j = i;
-            while (j > 0 && cnt0 * cnt0 <= n) {
-                int cnt1 = (i - pre[j]) - cnt0;
-                if (cnt0 * cnt0 <= cnt1) {
-                    res += min(j - pre[j], cnt1 - cnt0 * cnt0 + 1);
+        vector<vector<long long int>> mp(n+1);
+        for(int i=0; i<n; i++) mp[prev[i]].push_back(i);
+        long long int reql = sqrt(n) + 1;
+        long long int req = 0;
+        for(int i=0; i<=reql; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                long long int nextz = prev[j]+i;
+                long long int reqind = j+i+(i*i)-1;
+                if(i == 0 && s[j] == '1') reqind = reqind +1;
+                if(i == 0 && s[j] == '0') continue;
+                if(i>0 && s[j] == '0') nextz = nextz-1;
+                //cout << i << " " << j << " " << nextz << " " << reqind << endl;
+                if(nextz <= n && !mp[nextz].empty())
+                {
+                    long long int ind = lower_bound(mp[nextz].begin(), mp[nextz].end(), reqind) - mp[nextz].begin();
+                    req = req + (mp[nextz].size() - ind);
                 }
-                j = pre[j];
-                cnt0++;
+                //cout << req << endl;
             }
         }
-        return res;
+        return req;
     }
 };
