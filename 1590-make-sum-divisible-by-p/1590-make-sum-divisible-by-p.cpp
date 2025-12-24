@@ -1,26 +1,22 @@
 class Solution {
 public:
     int minSubarray(vector<int>& nums, int p) {
-        typedef long long ll;
-        int n = nums.size();
-        ll total = 0;
-        for (int x : nums)
-            total += x;
-        int target = total % p;
-        if (target == 0)
-            return 0;
-        unordered_map<int, int> dic;
-        dic[0] = -1;
-        ll curr = 0;
-        int res = n;
-        for (int i = 0; i < n; i++){
-            curr = (curr + nums[i]) % p;
-            int need = (curr - target + p) % p;
-            if (dic.count(need)){
-                res = min(res, i - dic[need]);
-            }
-            dic[curr] = i;
+        long long int n = nums.size();
+        vector<long long int> pref(n);
+        map<long long int, long long int> rem;
+        pref[0] = nums[0]%p;
+        for(int i=1; i<n; i++) pref[i] = (nums[i]+pref[i-1])%p;
+        long long int req = pref[n-1];
+        if(req == 0) return 0;
+        long long int minn = n;
+        for(int i=n-1; i>=0; i--)
+        {
+            //cout << (req-pref[i]+p)%p << " " << pref[i] << " " << req << " " << (req-pref[i]+p)%p << endl;
+            if(rem.find((req+pref[i])%p) != rem.end()) minn = min(minn, rem[(req+pref[i])%p]-i);
+            rem[pref[i]] = i; 
         }
-        return res == n ? -1 : res;
+        if(rem.find(req) != rem.end()) minn = min(minn, rem[req]+1);
+        if(minn == n) return -1;
+        else return minn;
     }
 };
