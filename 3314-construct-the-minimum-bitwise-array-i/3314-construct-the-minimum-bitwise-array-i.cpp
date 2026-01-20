@@ -9,7 +9,7 @@ public:
             vector<long long int> temparr(50);
             for(int i=0; i<50; i++) {temparr[i] = temp%2; temp = temp/2;}
             long long int lind = -1;
-            for(int i=0; i<50; i++) 
+            for(int i=0; i<20; i++) 
             {
                 if(temparr[i] == 1) lind = i;
                 else break;
