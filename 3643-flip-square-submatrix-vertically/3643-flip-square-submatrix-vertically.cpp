@@ -5,9 +5,10 @@ public:
         {
             for(int j=y; j<y+k; j++)
             {
-                int temp = grid[i][j];
-                grid[i][j] = grid[l][j];
-                grid[l][j] = temp;
+                // int temp = grid[i][j];
+                // grid[i][j] = grid[l][j];
+                // grid[l][j] = temp;
+                swap(grid[i][j], grid[l][j]);
             }
         }
         return grid;
