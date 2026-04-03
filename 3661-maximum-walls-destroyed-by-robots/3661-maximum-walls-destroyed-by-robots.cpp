@@ -78,7 +78,7 @@ public:
                 {
                     if(arr[i][0] < distcov)
                     {
-                        right[prevpos] = wallnos;
+                        left[prevpos] = wallnos;
                         prevpos = -1;
                         distcov = -1;
                         wallnos = 0;
@@ -87,16 +87,16 @@ public:
                 }
                 else
                 {
-                    right[prevpos] = wallnos;
+                    left[prevpos] = wallnos;
                     prevpos = arr[i][0];
-                    distcov = arr[i][0]+arr[i][2];
+                    distcov = arr[i][0]-arr[i][2];
                     wallnos = 0;
                 }
             }
         }
         if(prevpos != -1)
         {
-            right[prevpos] = wallnos;
+            left[prevpos] = wallnos;
             wallnos = 0;
             prevpos = -1;
             distcov = -1;
