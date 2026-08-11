@@ -22,7 +22,7 @@ public:
         {
             if(nums[i] >= sum && nums.size() >= nums[i]-sum) arr[nums[i]-sum] = true;
         }
-        cout << sum << endl;
+        //cout << sum << endl;
         long long int curri = -1;
         for(int i=0; i<=n; i++) if(arr[i] == false) {curri = i+sum; break;}
         return curri;
